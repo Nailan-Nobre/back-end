@@ -1,0 +1,19 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npx prisma generate",
+    "start": "node app.js"
+  },
+  "type": "module",
+  "author": "Focus in beauty",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.0.1",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.0.1"
+  }
+}
