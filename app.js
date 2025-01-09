@@ -1,5 +1,5 @@
 import Express from 'express';
-import logger from './middlewares/logger.js';
+import logger from './midlewares/logger.js';
 import userRouter from './router/users.js';
 
 const app = Express()
