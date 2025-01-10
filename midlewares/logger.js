@@ -3,5 +3,4 @@ const logger = function (req, res, next) {
     next()
   }
   
-  
   export default logger
