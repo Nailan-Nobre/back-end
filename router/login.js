@@ -1,29 +1,42 @@
-import fetch from 'node-fetch'
+const express = require('express');
+const prisma = require('@prisma/client').PrismaClient;
+const app = express();
+app.use(express.json());
 
-const USERS_API_URL = 'https://back-end-6der.onrender.com/users'
+const prismaClient = new prisma();
 
-app.post('/login', async (req, res) => {
-  const { email, password } = req.body
-
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email e senha são obrigatórios' })
-  }
+// Rota de login
+app.post('/users', async (req, res) => {
+  const { email, password } = req.body;
 
   try {
-    // Busca todos os usuários da API
-    const response = await fetch(USERS_API_URL)
-    const users = await response.json()
+    // Busca o usuário no banco de dados usando Prisma
+    const usuario = await prismaClient.user.findUnique({
+      where: {
+        email: email // Busca o usuário pelo email
+      }
+    });
 
-    // Encontra o usuário correspondente
-    const user = users.find(u => u.email === email && u.password === password)
-
-    if (user) {
-      return res.status(200).json({ message: 'Login bem-sucedido', userId: user.id, name: user.name })
+    // Verifica se o usuário foi encontrado e se a senha está correta
+    if (usuario && usuario.password === password) {
+      // Se for encontrado e a senha for correta, retorna os dados do usuário
+      res.status(200).json({
+        name: usuario.name,
+        email: usuario.email
+      });
     } else {
-      return res.status(401).json({ message: 'Credenciais inválidas' })
+      // Se não for encontrado ou a senha estiver incorreta, retorna erro
+      res.status(401).json({ message: 'Credenciais inválidas' });
     }
   } catch (error) {
-    console.error('Erro ao buscar usuários:', error)
-    res.status(500).json({ message: 'Erro interno no servidor' })
+    console.error(error);
+    res.status(500).json({ message: 'Erro no servidor' });
   }
-})
+});
+
+// Inicia o servidor
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => {
+  console.log(`app online na porta ${PORT}`)
+});
