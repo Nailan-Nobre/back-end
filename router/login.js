@@ -33,10 +33,3 @@ app.post('/users', async (req, res) => {
     res.status(500).json({ message: 'Erro no servidor' });
   }
 });
-
-// Inicia o servidor
-const PORT = process.env.PORT || 3000
-
-app.listen(PORT, () => {
-  console.log(`app online na porta ${PORT}`)
-});
