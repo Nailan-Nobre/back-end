@@ -2,8 +2,8 @@
   "name": "back-end",
   "version": "1.0.0",
   "scripts": {
-    "build": "npx prisma generate",
-    "start": "node app.js"
+  "build": "./node_modules/.bin/prisma generate",
+  "start": "node app.js"
   },
   "type": "module",
   "author": "Focus in beauty",
@@ -12,9 +12,7 @@
   "dependencies": {
     "@prisma/client": "^6.0.1",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
-  },
-  "devDependencies": {
+    "express": "^4.21.2",
     "prisma": "^6.2.1"
   }
 }
