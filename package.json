@@ -2,12 +2,12 @@
   "name": "back-end",
   "version": "1.0.0",
   "scripts": {
-    "build": "npx prisma generate",
-    "prisma:migrate": "prisma migrate deploy",
-    "start": "node app.js"
+  "build": "npx prisma generate",
+  "migrate": "npx prisma migrate deploy",
+  "start": "node app.js"
   },
   "type": "module",
-  "author": "Focus in beauty",
+  "author": "",
   "license": "MIT",
   "description": "",
   "dependencies": {
