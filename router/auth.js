@@ -21,7 +21,7 @@ authRouter.post('/login', async (req, res) => {
 
   if (!user) {
     console.log('email não cadastrado: ', email)
-    res.status(400).send('User or password invalid')
+    res.status(400).send('Usuário ou email invalidos')
   }
 
 
@@ -35,7 +35,7 @@ authRouter.post('/login', async (req, res) => {
       token
     })
   } else {
-    res.status(400).send('User or password invalid')
+    res.status(400).send('Usuário ou email invalidos')
   }
 
 })
