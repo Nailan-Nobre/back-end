@@ -17,10 +17,6 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.8",
     "prisma": "^6.3.0"
-  },
-  "engines": {
-    "node": ">=16 <21"
   }
 }
