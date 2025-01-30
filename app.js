@@ -2,9 +2,8 @@ import cors from 'cors';
 import Express from 'express';
 import logger from './midlewares/logger.js';
 import userRouter from './router/users.js';
-import verifyToken from './middlewares/verifyToken.js';
 import authRouter from './router/auth.js';
-
+import verifyToken from './midlewares/verifyToken.js';
 const app = Express()
 app.use(cors())
 app.use(Express.json())
