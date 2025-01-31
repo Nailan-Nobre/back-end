@@ -5,7 +5,7 @@ function verifyToken(req, res, next) {
   console.log(token)
   if (!token) {
     return res.status(403).send({
-      auth: false, message: 'No token provided.'
+      auth: false, message: 'Nenhum token fornecido.'
     })
   }
 
