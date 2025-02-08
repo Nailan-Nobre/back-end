@@ -1,7 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import bcrypt from "bcrypt";
 import { Router } from 'express';
-const saltRounds = 10;
 
 const userRouter = Router()
 const prisma = new PrismaClient()
