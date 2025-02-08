@@ -14,10 +14,14 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  name     String
-  password String?
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  name      String
+  password  String?
+  imagem    String? 
+  biografia String? 
+  estado    String? 
+  cidade    String?
 
   @@map("users")
 }

@@ -42,14 +42,13 @@ authRouter.post('/login', async (req, res) => {
 
 
 authRouter.post('/signup', async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, imagem, biografia, estado, cidade } = req.body;
 
-  if (!name || !email || !password) {
-    return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+  if (!name || !email || !password || !biografia || !estado || !cidade) {
+    return res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos' });
   }
 
   try {
-    // Verifica se o email já está em uso
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -64,6 +63,10 @@ authRouter.post('/signup', async (req, res) => {
         name,
         email,
         password: hashedPassword,
+        imagem,
+        biografia,
+        estado,
+        cidade,
       },
     });
     res.status(201).json(newUser);
