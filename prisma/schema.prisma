@@ -18,10 +18,6 @@ model User {
   email     String @unique
   name      String
   password  String?
-  imagem    String? 
-  biografia String? 
-  estado    String? 
-  cidade    String?
-
+  
   @@map("users")
 }

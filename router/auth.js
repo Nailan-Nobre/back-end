@@ -44,7 +44,7 @@ authRouter.post('/login', async (req, res) => {
 authRouter.post('/signup', async (req, res) => {
   const { name, email, password, imagem, biografia, estado, cidade } = req.body;
 
-  if (!name || !email || !password || !biografia || !estado || !cidade) {
+  if (!name || !email || !password) {
     return res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos' });
   }
 
@@ -63,10 +63,6 @@ authRouter.post('/signup', async (req, res) => {
         name,
         email,
         password: hashedPassword,
-        imagem,
-        biografia,
-        estado,
-        cidade,
       },
     });
     res.status(201).json(newUser);
