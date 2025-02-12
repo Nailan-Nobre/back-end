@@ -13,15 +13,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TipoUsuario {
+  MANICURE
+  CLIENTE
+}
+
 model User {
   id        Int    @id @default(autoincrement())
   email     String @unique
   name      String
   password  String?
-  imagem    String? 
-  biografia String? 
+  telefone  String?
+  foto      String?  
   estado    String? 
   cidade    String?
+  tipo      TipoUsuario
 
   @@map("users")
 }

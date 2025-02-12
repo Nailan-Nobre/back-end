@@ -1,50 +1,39 @@
 import { PrismaClient } from '@prisma/client';
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 const saltRounds = 10;
 
-
-const authRouter = Router()
-const prisma = new PrismaClient()
+const authRouter = Router();
+const prisma = new PrismaClient();
 
 authRouter.post('/login', async (req, res) => {
-
-  const email = req.body.email;
-  const password = req.body.password;
+  const { email, password } = req.body;
 
   const user = await prisma.user.findUnique({
-    where: {
-      email
-    }
-  })
+    where: { email },
+  });
 
   if (!user) {
-    console.log('email não cadastrado: ', email)
-    res.status(400).send('Usuário ou email invalidos')
+    console.log('email não cadastrado: ', email);
+    return res.status(400).send('Usuário ou email inválidos');
   }
 
-
-  const passwordIsValid = bcrypt.compareSync(password, user.password)
+  const passwordIsValid = bcrypt.compareSync(password, user.password);
 
   if (passwordIsValid) {
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' })
-    delete user.password
-    res.send({
-      user,
-      token
-    })
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    delete user.password;
+    res.send({ user, token });
   } else {
-    res.status(400).send('Usuário ou email invalidos')
+    res.status(400).send('Usuário ou email inválidos');
   }
-
-})
-
+});
 
 authRouter.post('/signup', async (req, res) => {
-  const { name, email, password, imagem, biografia, estado, cidade } = req.body;
+  const { name, email, password, telefone, foto, estado, cidade, tipo } = req.body;
 
-  if (!name || !email || !password || !biografia || !estado || !cidade) {
+  if (!name || !email || !password || !telefone || !estado || !cidade || !tipo) {
     return res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos' });
   }
 
@@ -63,10 +52,11 @@ authRouter.post('/signup', async (req, res) => {
         name,
         email,
         password: hashedPassword,
-        imagem,
-        biografia,
+        telefone,
+        foto,
         estado,
         cidade,
+        tipo: tipo.toUpperCase(), // Certifique-se de que o tipo está em maiúsculas para corresponder ao enum
       },
     });
     res.status(201).json(newUser);
