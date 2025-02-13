@@ -1,6 +1,6 @@
-const express = require("express");
-const upload = require("../middlewares/upload");
-const { PrismaClient } = require("@prisma/client");
+import express from "express";
+import upload from "../middlewares/upload";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const router = express.Router();
