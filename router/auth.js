@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
-const upload = require("../middlewares/upload");
+import upload from "../middlewares/upload.js";
 
 const saltRounds = 10;
 const authRouter = Router();
