@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
-import upload from "../midlewares/upload.js";
+//import upload from "../midlewares/upload.js";
 
 const saltRounds = 10;
 const authRouter = Router();
@@ -31,10 +31,10 @@ authRouter.post("/login", async (req, res) => {
   }
 });
 
-authRouter.post("/signup", upload.single("foto"), async (req, res) => {
+authRouter.post("/signup", async (req, res) => {
   try {
     const { name, email, password, telefone, estado, cidade, tipo } = req.body;
-    const foto = req.file ? req.file.path : null;
+    //const foto = req.file ? req.file.path : null;
 
     if (!name || !email || !password || !telefone || !estado || !cidade) {
       return res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos" });
@@ -52,7 +52,7 @@ authRouter.post("/signup", upload.single("foto"), async (req, res) => {
         email,
         password: hashedPassword,
         telefone,
-        foto,
+        //foto,
         estado,
         cidade,
         tipo: tipo.toUpperCase(),
