@@ -52,7 +52,6 @@ authRouter.post("/signup", async (req, res) => {
         email,
         password: hashedPassword,
         telefone,
-        //foto,
         estado,
         cidade,
         tipo: tipo.toUpperCase(),
@@ -61,7 +60,7 @@ authRouter.post("/signup", async (req, res) => {
     res.status(201).json(newUser);
   } catch (error) {
     console.error("Erro ao registrar usuário:", error);
-    res.status(500).json({ message: "Erro ao registrar usuário" });
+    res.status(500).json({ message: "Erro ao registrar usuário", error: error.message });
   }
 });
 
