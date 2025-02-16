@@ -27,7 +27,7 @@ model User {
   //foto      String?  
   estado    String? 
   cidade    String?
-  tipo      TipoUsuario
+  tipo      TipoUsuario @default(CLIENTE)
 
   @@map("users")
 }
