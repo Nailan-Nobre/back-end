@@ -8,10 +8,12 @@ const prisma = new PrismaClient();
 userRouter.get('/users/manicures', async (req, res) => {
   try {
     const manicures = await prisma.user.findMany({
-      where: { tipo: "MANICURE" },
+      where: { tipo: "MANICURE" }, 
     });
     res.json(manicures);
   } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar manicures' });
   }
 });
+
+export default userRouter;
