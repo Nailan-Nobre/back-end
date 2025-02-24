@@ -4,19 +4,26 @@ import { Router } from 'express';
 const userRouter = Router();
 const prisma = new PrismaClient();
 
-// Rota para obter um usuário por ID
-userRouter.get('/users/:id', async (req, res) => {
-  const { id } = req.params;
+// Rota para buscar manicures
+userRouter.get('/users/manicures', async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: parseInt(id) },
+    const manicures = await prisma.user.findMany({
+      where: { tipo: "MANICURE" },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        telefone: true,
+        estado: true,
+        cidade: true,
+        tipo: true,
+      }
     });
-    if (!user) {
-      return res.status(404).json({ error: 'Usuário não encontrado' });
-    }
-    res.json(user);
+
+    res.json(manicures);
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar usuário' });
+    console.error("Erro ao buscar manicures:", error);
+    res.status(500).json({ error: 'Erro ao buscar manicures' });
   }
 });
 
