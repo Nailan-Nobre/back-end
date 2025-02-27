@@ -24,7 +24,6 @@ model User {
   name      String
   password  String?
   telefone  String?
-  //foto      String?  
   estado    String? 
   cidade    String?
   tipo      TipoUsuario @default(CLIENTE)
