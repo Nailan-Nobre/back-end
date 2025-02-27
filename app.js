@@ -15,8 +15,8 @@ app.get('/', (req, res) => {
 app.use(logger)
 app.use(authRouter)
 
-app.use(verifyToken)
 app.use(userRouter)
+app.use(verifyToken)
 
 const PORT = process.env.PORT || 3000
 
