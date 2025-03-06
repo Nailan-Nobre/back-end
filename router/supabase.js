@@ -9,7 +9,7 @@ export async function uploadImagem(imagemBase64, nomeArquivo) {
     try {
         // Remover o prefixo "data:image/png;base64," se ele existir
         if (imagemBase64.startsWith("data:image")) {
-            imagemBase64 = imagemBase64.split(",")[1];
+            imagemBase64 = imagemBase64.split(",")[1]; // Remove o prefixo base64
         }
 
         // Detecta o tipo da imagem baseado no prefixo
@@ -27,22 +27,22 @@ export async function uploadImagem(imagemBase64, nomeArquivo) {
             tipoImagem = "image/svg+xml";
         }
 
-        // Gerar nome único para a imagem
-        const nomeUnico = `usuarios/${Date.now()}-${nomeArquivo}.${tipoImagem.split("/")[1]}`;
-        console.log("Nome do arquivo para upload:", nomeUnico);
+        // Gerar um nome único para o arquivo, usando a data atual
+        const nomeUnico = `usuarios/${Date.now()}-${nomeArquivo}`;
+
+        // Realiza o upload da imagem para o Supabase
+        const { data, error } = await supabase.storage
+            .from("usuarios-imagens") // Nome do bucket
+            .upload(nomeUnico, Buffer.from(imagemBase64, "base64"), { contentType: tipoImagem });
 
         if (error) {
             console.error("Erro ao enviar imagem para o Supabase:", error);
             throw new Error("Erro ao enviar imagem para o Supabase.");
         }
 
-        console.log("Upload realizado com sucesso:", data);
-
-        // Obter a URL pública da imagem
+        // Recupera a URL pública da imagem
         const { publicURL } = supabase.storage.from("usuarios-imagens").getPublicUrl(nomeUnico);
-        console.log("URL pública da imagem:", publicURL);
-
-        return publicURL;
+        return publicURL; // Retorna a URL pública da imagem
     } catch (error) {
         console.error("Erro na função uploadImagem:", error);
         throw error;
