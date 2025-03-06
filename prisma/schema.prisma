@@ -20,6 +20,7 @@ enum TipoUsuario {
 
 model User {
   id        Int    @id @default(autoincrement())
+  foto      String?
   email     String @unique
   name      String
   password  String?

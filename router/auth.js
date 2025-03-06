@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
+import { uploadImagem } from "../router/supabase.js";
 
 const saltRounds = 10;
 const authRouter = Router();
@@ -15,7 +16,7 @@ authRouter.post("/login", async (req, res) => {
   });
 
   if (!user) {
-    console.log("email não cadastrado: ", email);
+    console.log("Email não cadastrado: ", email);
     return res.status(400).send("Usuário ou email inválidos");
   }
 
@@ -32,7 +33,7 @@ authRouter.post("/login", async (req, res) => {
 
 authRouter.post("/signup", async (req, res) => {
   try {
-    const { name, email, password, telefone, estado, cidade, tipo } = req.body;
+    const { name, email, password, telefone, estado, cidade, tipo, fotoBase64 } = req.body;
 
     if (!name || !email || !password || !telefone || !estado || !cidade) {
       return res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos" });
@@ -44,6 +45,18 @@ authRouter.post("/signup", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    let fotoUrl = null;
+    if (fotoBase64) {
+      try {
+        fotoUrl = await uploadImagem(fotoBase64, email); // Usa o email como nome da imagem
+      } catch (error) {
+        console.error("Erro ao fazer upload da imagem:", error);
+        return res.status(500).json({ message: "Erro ao fazer upload da imagem" });
+      }
+    }
+
+    // Criação do usuário no banco
     const newUser = await prisma.user.create({
       data: {
         name,
@@ -53,8 +66,10 @@ authRouter.post("/signup", async (req, res) => {
         estado,
         cidade,
         tipo: tipo.toUpperCase(),
+        foto: fotoUrl,
       },
     });
+
     res.status(201).json(newUser);
   } catch (error) {
     console.error("Erro ao registrar usuário:", error);
