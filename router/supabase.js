@@ -1,3 +1,11 @@
+import { createClient } from "@supabase/supabase-js";
+import dotenv from "dotenv";
+import { Buffer } from "buffer";
+dotenv.config();
+
+// Criação do cliente Supabase
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+
 export async function uploadImagem(imagemBase64, nomeArquivo) {
     try {
         // Detectar tipo da imagem pelo prefixo
@@ -20,8 +28,6 @@ export async function uploadImagem(imagemBase64, nomeArquivo) {
                 contentType: tipoImagem,
                 upsert: true, // Substitui se já existir
             });
-
-        console.log("Dados retornados do Supabase:", data);  // Adicione este log para inspecionar a resposta
 
         if (error) {
             console.error("Erro ao enviar imagem para o Supabase:", error);
