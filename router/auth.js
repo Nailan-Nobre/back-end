@@ -57,7 +57,14 @@ authRouter.post("/signup", async (req, res) => {
       return res.status(500).json({ message: "Erro ao fazer upload da imagem" });
     }
 
-    // Criação do usuário no banco de dados
+    if (error) {
+      console.error("Erro ao enviar imagem para o Supabase:", error);
+      return res.status(500).json({ message: "Erro ao enviar imagem para o Supabase." });
+    }
+    
+    console.log("URL da imagem enviada:", fotoUrl);  // Adicione este log para inspecionar o retorno
+    
+    // Criação do usuário no banco
     const newUser = await prisma.user.create({
       data: {
         name,
@@ -67,7 +74,7 @@ authRouter.post("/signup", async (req, res) => {
         estado,
         cidade,
         tipo: tipo.toUpperCase(),
-        foto: fotoUrl, // Armazena a URL da foto
+        foto: fotoUrl,
       },
     });
 
