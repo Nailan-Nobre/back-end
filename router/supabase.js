@@ -1,4 +1,4 @@
-export async function gerarUrlPresigned(nomeArquivo) {
+export async function uploadImagem(nomeArquivo) {
     try {
         const nomeUnico = `usuarios/${Date.now()}-${nomeArquivo}`;
         
