@@ -2,17 +2,11 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
-import multer from "multer"; // Importando o multer para processar o upload de arquivos
-import { uploadImagem } from "../router/supabase.js";
+import { uploadImagem } from "../router/supabase.js"; // A função de upload para o Supabase
 
 const saltRounds = 10;
 const authRouter = Router();
 const prisma = new PrismaClient();
-
-// Configuração do Multer para salvar arquivos temporários
-const upload = multer({
-  storage: multer.memoryStorage(), // Armazenamento em memória
-}).single("foto"); // O nome do campo no formulário é "foto"
 
 // Rota de login
 authRouter.post("/login", async (req, res) => {
@@ -39,12 +33,11 @@ authRouter.post("/login", async (req, res) => {
 });
 
 // Rota de cadastro
-authRouter.post("/signup", upload, async (req, res) => {
+authRouter.post("/signup", async (req, res) => {
   try {
-    const { name, email, password, telefone, estado, cidade, tipo } = req.body;
-    const foto = req.file; // Foto recebida via multipart/form-data
+    const { name, email, password, telefone, estado, cidade, tipo, fotoBase64 } = req.body;
 
-    if (!name || !email || !password || !telefone || !estado || !cidade) {
+    if (!name || !email || !password || !telefone || !estado || !cidade || !fotoBase64) {
       return res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos" });
     }
 
@@ -55,18 +48,16 @@ authRouter.post("/signup", upload, async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+    // Enviar a imagem para o Supabase e obter a URL
     let fotoUrl = null;
-    if (foto) {
-      try {
-        // Se houver foto, faz o upload usando a função `uploadImagem`
-        fotoUrl = await uploadImagem(foto.buffer, email); // Usa o buffer da imagem
-      } catch (error) {
-        console.error("Erro ao fazer upload da imagem:", error);
-        return res.status(500).json({ message: "Erro ao fazer upload da imagem" });
-      }
+    try {
+      fotoUrl = await uploadImagem(fotoBase64, email); // Envia a imagem base64 e obtém a URL
+    } catch (error) {
+      console.error("Erro ao fazer upload da imagem:", error);
+      return res.status(500).json({ message: "Erro ao fazer upload da imagem" });
     }
 
-    // Criação do usuário no banco
+    // Criação do usuário no banco de dados
     const newUser = await prisma.user.create({
       data: {
         name,
@@ -76,7 +67,7 @@ authRouter.post("/signup", upload, async (req, res) => {
         estado,
         cidade,
         tipo: tipo.toUpperCase(),
-        foto: fotoUrl,
+        foto: fotoUrl, // Armazena a URL da foto
       },
     });
 
