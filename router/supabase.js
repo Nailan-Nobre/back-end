@@ -1,47 +1,20 @@
-import { createClient } from "@supabase/supabase-js";
-import dotenv from "dotenv";
-import { Buffer } from "buffer";
-dotenv.config();
-
-// Criação do cliente Supabase
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-
-export async function uploadImagem(imagemBase64, nomeArquivo) {
+export async function gerarUrlPresigned(nomeArquivo) {
     try {
-        // Detectar tipo da imagem pelo prefixo
-        let tipoImagem = "image/png"; // Default
-        const prefixoRegex = /^data:(image\/[a-zA-Z+]+);base64,/;
-        const match = imagemBase64.match(prefixoRegex);
-
-        if (match) {
-            tipoImagem = match[1];
-            imagemBase64 = imagemBase64.replace(prefixoRegex, ""); // Remove prefixo
-        }
-
-        // Gerar nome único
         const nomeUnico = `usuarios/${Date.now()}-${nomeArquivo}`;
-
-        // Upload da imagem para o Supabase
+        
+        // Gera URL presigned para upload
         const { data, error } = await supabase.storage
-            .from("usuarios-imagens") // Nome do bucket
-            .upload(nomeUnico, Buffer.from(imagemBase64, "base64"), {
-                contentType: tipoImagem,
-                upsert: true, // Substitui se já existir
-            });
+            .from("usuarios-imagens")
+            .createSignedUrl(nomeUnico, 60); // URL válida por 60 segundos
 
         if (error) {
-            console.error("Erro ao enviar imagem para o Supabase:", error);
-            throw new Error("Erro ao enviar imagem para o Supabase.");
+            console.error("Erro ao criar URL presigned:", error);
+            throw new Error("Erro ao criar URL presigned.");
         }
 
-        // Recupera URL pública
-        const { data: urlData } = supabase.storage
-            .from("usuarios-imagens")
-            .getPublicUrl(nomeUnico);
-
-        return urlData.publicUrl;
+        return data.signedUrl; // Retorna a URL presigned
     } catch (error) {
-        console.error("Erro na função uploadImagem:", error);
+        console.error("Erro ao gerar URL presigned:", error);
         throw error;
     }
 }
