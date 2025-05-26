@@ -1,10 +1,10 @@
 import cors from 'cors';
 import Express from 'express';
-import logger from './midlewares/logger.js';
-import userRouter from './router/users.js';
-import authRouter from './router/auth.js';
-import verifyToken from './midlewares/verifyToken.js';
-const agendamentoRoutes = require('./routes/agendamentoRoutes');
+import verifyToken from 'src/middlewares/verifyToken.js';
+import logger from 'src/middlewares/logger.js';
+import userRouter from 'src/routes/users.js';
+import authRouter from 'src/routes/auth.js';
+import agendamentoRoutes from 'src/routes/agendamentoRoutes.js';
 const app = Express()
 app.use(cors())
 app.use(Express.json())
