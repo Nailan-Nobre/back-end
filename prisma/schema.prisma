@@ -18,6 +18,13 @@ enum TipoUsuario {
   CLIENTE
 }
 
+enum StatusAgendamento {
+  PENDENTE
+  ACEITO
+  RECUSADO
+  CANCELADO
+}
+
 model User {
   id        Int    @id @default(autoincrement())
   foto      String?
@@ -25,9 +32,25 @@ model User {
   name      String
   password  String?
   telefone  String?
-  estado    String? 
+  estado    String?
   cidade    String?
   tipo      TipoUsuario @default(CLIENTE)
 
+  agendamentosComoCliente Agendamento[] @relation("ClienteAgendamentos")
+  agendamentosComoManicure Agendamento[] @relation("ManicureAgendamentos")
+
   @@map("users")
+}
+
+model Agendamento {
+  id           Int               @id @default(autoincrement())
+  clienteId    Int
+  manicureId   Int
+  dataHora     DateTime
+  status       StatusAgendamento @default(PENDENTE)
+  criadoEm     DateTime          @default(now())
+  atualizadoEm DateTime          @updatedAt
+
+  cliente      User @relation("ClienteAgendamentos", fields: [clienteId], references: [id])
+  manicure     User @relation("ManicureAgendamentos", fields: [manicureId], references: [id])
 }

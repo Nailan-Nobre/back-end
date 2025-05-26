@@ -4,6 +4,7 @@ import logger from './midlewares/logger.js';
 import userRouter from './router/users.js';
 import authRouter from './router/auth.js';
 import verifyToken from './midlewares/verifyToken.js';
+const agendamentoRoutes = require('./routes/agendamentoRoutes');
 const app = Express()
 app.use(cors())
 app.use(Express.json())
@@ -17,6 +18,10 @@ app.use(authRouter)
 
 app.use(userRouter)
 app.use(verifyToken)
+
+app.use(authMiddleware);
+
+app.use('/agendamentos', agendamentoRoutes);
 
 const PORT = process.env.PORT || 3000
 
