@@ -95,21 +95,3 @@ export async function listarAgendamentosManicure(req, res) {
     res.status(500).json({ error: 'Erro ao buscar agendamentos.' });
   }
 }
-
-// criar agendamento
-export async function criarAgendamento(req, res) { /*...*/ }
-
-// aceitar agendamento
-export async function aceitarAgendamento(req, res) { /*...*/ }
-
-// recusar agendamento
-export async function recusarAgendamento(req, res) { /*...*/ }
-
-// cancelar agendamento
-export async function cancelarAgendamento(req, res) { /*...*/ }
-
-// listar agendamentos cliente
-export async function listarAgendamentosCliente(req, res) { /*...*/ }
-
-// listar agendamentos manicure
-export async function listarAgendamentosManicure(req, res) { /*...*/ }
