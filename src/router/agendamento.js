@@ -1,7 +1,8 @@
-const express = require('express');
+import express from 'express';
+import agendamentoController from '../controllers/agendamentoController.js';
+import { verificarPermissao } from '../middlewares/authMiddleware.js';
+
 const router = express.Router();
-const agendamentoController = require('../controllers/agendamentoController');
-const { verificarPermissao } = require('../middlewares/authMiddleware');
 
 // Cliente cria agendamento
 router.post(
@@ -45,4 +46,4 @@ router.patch(
   agendamentoController.cancelarAgendamento
 );
 
-module.exports = router;
+export default router;
