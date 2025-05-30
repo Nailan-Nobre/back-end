@@ -1,30 +1,35 @@
 import cors from 'cors';
 import Express from 'express';
-import logger from './middlewares/logger.js';
-import userRouter from './routes/users.js';
-import authRouter from './routes/auth.js';
-import verifyToken from './middlewares/verifyToken.js';
-import agendamentoRoutes from './routes/agendamentoRoutes.js';
-const app = Express()
-app.use(cors())
-app.use(Express.json())
+import logger from './src/middlewares/logger.js';
+import userRouter from './src/router/users.js';
+import authRouter from './src/router/auth.js';
+import verifyToken from './src/middlewares/verifyToken.js';
+import agendamentoRoutes from './src/router/agendamento.js';
 
+const app = Express();
+app.use(cors());
+app.use(Express.json());
+
+// Middleware de logging
+app.use(logger);
+
+// Rota pública
 app.get('/', (req, res) => {
-  res.send("App online!")
-})
+  res.send("App online!");
+});
 
-app.use(logger)
-app.use(authRouter)
+// Rotas de autenticação (não requerem token)
+app.use(authRouter);
 
-app.use(userRouter)
-app.use(verifyToken)
+// Middleware de autenticação
+app.use(verifyToken);
 
-app.use(authMiddleware);
-
+// Rotas protegidas
+app.use(userRouter);
 app.use('/agendamentos', agendamentoRoutes);
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`app online na porta ${PORT}`)
+  console.log(`app online na porta ${PORT}`);
 });
