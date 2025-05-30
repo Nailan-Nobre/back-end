@@ -1,8 +1,9 @@
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
+
 const prisma = new PrismaClient();
 
 // criar agendamento
-async function criarAgendamento(req, res) {
+export async function criarAgendamento(req, res) {
   const { manicureId, dataHora } = req.body;
   const clienteId = req.user.id;
 
@@ -21,7 +22,7 @@ async function criarAgendamento(req, res) {
 }
 
 // aceitar agendamento
-async function aceitarAgendamento(req, res) {
+export async function aceitarAgendamento(req, res) {
   const { id } = req.params;
 
   try {
@@ -36,7 +37,7 @@ async function aceitarAgendamento(req, res) {
 }
 
 // recusar agendamento
-async function recusarAgendamento(req, res) {
+export async function recusarAgendamento(req, res) {
   const { id } = req.params;
 
   try {
@@ -51,7 +52,7 @@ async function recusarAgendamento(req, res) {
 }
 
 // cancelar agendamento
-async function cancelarAgendamento(req, res) {
+export async function cancelarAgendamento(req, res) {
   const { id } = req.params;
 
   try {
@@ -66,7 +67,7 @@ async function cancelarAgendamento(req, res) {
 }
 
 // listar agendamentos cliente
-async function listarAgendamentosCliente(req, res) {
+export async function listarAgendamentosCliente(req, res) {
   const clienteId = req.user.id;
 
   try {
@@ -81,7 +82,7 @@ async function listarAgendamentosCliente(req, res) {
 }
 
 // listar agendamentos manicure
-async function listarAgendamentosManicure(req, res) {
+export async function listarAgendamentosManicure(req, res) {
   const manicureId = req.user.id;
 
   try {
@@ -95,11 +96,20 @@ async function listarAgendamentosManicure(req, res) {
   }
 }
 
-export default {
-  criarAgendamento,
-  aceitarAgendamento,
-  recusarAgendamento,
-  cancelarAgendamento,
-  listarAgendamentosCliente,
-  listarAgendamentosManicure,
-};
+// criar agendamento
+export async function criarAgendamento(req, res) { /*...*/ }
+
+// aceitar agendamento
+export async function aceitarAgendamento(req, res) { /*...*/ }
+
+// recusar agendamento
+export async function recusarAgendamento(req, res) { /*...*/ }
+
+// cancelar agendamento
+export async function cancelarAgendamento(req, res) { /*...*/ }
+
+// listar agendamentos cliente
+export async function listarAgendamentosCliente(req, res) { /*...*/ }
+
+// listar agendamentos manicure
+export async function listarAgendamentosManicure(req, res) { /*...*/ }
