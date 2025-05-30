@@ -32,10 +32,9 @@ authRouter.post("/login", async (req, res) => {
 });
 
 // Rota de cadastro
-authRouter.post("/signup", upload, async (req, res) => {
+authRouter.post("/signup", async (req, res) => {
   try {
     const { name, email, password, telefone, estado, cidade, tipo } = req.body;
-    const foto = req.file; // Foto recebida via multipart/form-data
 
     if (!name || !email || !password || !telefone || !estado || !cidade) {
       return res.status(400).json({ message: "Todos os campos obrigatórios devem ser preenchidos" });
@@ -58,7 +57,6 @@ authRouter.post("/signup", upload, async (req, res) => {
         estado,
         cidade,
         tipo: tipo.toUpperCase(),
-        foto: fotoUrl,
       },
     });
 
