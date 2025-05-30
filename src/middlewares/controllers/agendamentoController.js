@@ -95,7 +95,7 @@ async function listarAgendamentosManicure(req, res) {
   }
 }
 
-module.exports = {
+export default {
   criarAgendamento,
   aceitarAgendamento,
   recusarAgendamento,
