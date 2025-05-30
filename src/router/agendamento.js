@@ -1,5 +1,5 @@
 import express from 'express';
-import agendamentoController from '../controllers/agendamentoController.js';
+import agendamentoController from '../middlewares/controllers/agendamentoController.js';
 import { verificarPermissao } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
