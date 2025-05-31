@@ -10,11 +10,12 @@ export async function criarAgendamento(req, res) {
   try {
     const novoAgendamento = await prisma.agendamento.create({
       data: {
-        clienteId,
-        manicureId,
-        dataHora: new Date(dataHora),
+      clienteId,
+      manicureId,
+      dataHora: new Date(dataHora),
       },
     });
+    res.status(201).json({ message: 'Solicitação enviada com sucesso!', agendamento: novoAgendamento });
     res.status(201).json(novoAgendamento);
   } catch (error) {
     res.status(500).json({ error: 'Erro ao criar agendamento.' });
