@@ -16,7 +16,6 @@ export async function criarAgendamento(req, res) {
       },
     });
     res.status(201).json({ message: 'Solicitação enviada com sucesso!', agendamento: novoAgendamento });
-    res.status(201).json(novoAgendamento);
   } catch (error) {
     res.status(500).json({ error: 'Erro ao criar agendamento.' });
   }
