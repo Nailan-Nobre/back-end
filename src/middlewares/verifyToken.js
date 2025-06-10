@@ -1,24 +1,26 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
 function verifyToken(req, res, next) {
-  const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null
-  console.log(token)
+  const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
+
   if (!token) {
     return res.status(403).send({
-      auth: false, message: 'Nenhum token fornecido.'
-    })
+      auth: false,
+      message: 'Nenhum token fornecido.',
+    });
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       return res.status(500).send({
         auth: false,
-        message: 'Falha ao autenticar. Error -> ' + err
-      })
+        message: 'Falha ao autenticar. Error -> ' + err,
+      });
     }
-    req.userId = decoded.id
-    next()
-  })
+
+    req.user = decoded; // Agora o user tem id, tipo, etc.
+    next();
+  });
 }
 
-export default verifyToken
+export default verifyToken;
