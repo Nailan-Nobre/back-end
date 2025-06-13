@@ -4,14 +4,12 @@ import { Router } from 'express';
 const userRouter = Router();
 const prisma = new PrismaClient();
 
-// Rota para buscar todas as manicures
+// Buscar todas as manicures
 userRouter.get('/manicures', async (req, res) => {
-  console.log('Buscando manicures');
   try {
     const manicures = await prisma.user.findMany({
       where: { tipo: 'MANICURE' },
     });
-    console.log( manicures)
     res.json(manicures);
   } catch (error) {
     console.error(error);
@@ -19,12 +17,9 @@ userRouter.get('/manicures', async (req, res) => {
   }
 });
 
-export default userRouter
-
-//Buscar manicure pelo id
+// Buscar manicure por ID
 userRouter.get('/manicures/:id', async (req, res) => {
   const { id } = req.params;
-
   try {
     const manicure = await prisma.user.findUnique({
       where: { id: Number(id) },
@@ -41,3 +36,24 @@ userRouter.get('/manicures/:id', async (req, res) => {
   }
 });
 
+// Buscar qualquer usuário por ID
+userRouter.get('/usuario/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const usuario = await prisma.user.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+
+    res.json(usuario);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar usuário' });
+  }
+});
+
+export default userRouter;
