@@ -4,6 +4,8 @@ import { Router } from 'express';
 const userRouter = Router();
 const prisma = new PrismaClient();
 
+userRouter.options('*', cors());
+
 // Buscar todas as manicures
 userRouter.get('/manicures', async (req, res) => {
   try {

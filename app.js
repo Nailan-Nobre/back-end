@@ -7,12 +7,8 @@ import verifyToken from './src/middlewares/verifyToken.js';
 import agendamentoRoutes from './src/router/agendamento.js';
 
 const app = Express();
-app.use(cors({
-  origin: ['http://127.0.0.1:3000', 'http://localhost:3000'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
+app.use(cors());
+
 app.use(Express.json());
 
 // Middleware de logging

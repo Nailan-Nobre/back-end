@@ -1,6 +1,11 @@
 import jwt from 'jsonwebtoken';
 
 function verifyToken(req, res, next) {
+  // Permite requisições OPTIONS passar sem verificação
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(' ')[1];
 
@@ -19,8 +24,8 @@ function verifyToken(req, res, next) {
       });
     }
 
-    // ⚠️ Corrigido aqui
-    req.user = decoded; // Isso inclui id, tipo e outros dados do token
+    req.user = decoded;
+    req.userId = decoded.id; // Adiciona userId explicitamente para fácil acesso
     next();
   });
 }
