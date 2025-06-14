@@ -44,7 +44,7 @@ userRouter.get('/usuario/:id', async (req, res) => {
       where: { id: Number(id) },
       select: {
         id: true,
-        nome: true,
+        name: true,
         email: true,
         telefone: true,
         estado: true,
