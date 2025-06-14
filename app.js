@@ -7,7 +7,14 @@ import verifyToken from './src/middlewares/verifyToken.js';
 import agendamentoRoutes from './src/router/agendamento.js';
 
 const app = Express();
-app.use(cors());
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+  ],
+  credentials: true
+};
+app.use(cors(corsOptions));
 
 app.use(Express.json());
 

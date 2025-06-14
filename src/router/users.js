@@ -39,34 +39,28 @@ userRouter.get('/manicures/:id', async (req, res) => {
 // Buscar qualquer usuário por ID
 userRouter.get('/usuario/:id', async (req, res) => {
   const { id } = req.params;
-
-  // Verifica se o ID do token corresponde ao ID solicitado
-  if (req.userId !== Number(id)) {
-    return res.status(403).json({ error: 'Acesso não autorizado' });
-  }
-
   try {
     const usuario = await prisma.user.findUnique({
       where: { id: Number(id) },
-      select: { // Adicione select para não retornar dados sensíveis
+      select: {
         id: true,
         nome: true,
         email: true,
-        foto: true,
-        tipo: true,
         telefone: true,
-        endereco: true,
+        estado: true,
+        cidade: true,
+        tipo: true,
+        foto: true
       }
     });
-
     if (!usuario) {
-      return res.status(404).json({ error: 'Usuário não encontrado' });
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
     }
-
     res.json(usuario);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro ao buscar usuário' });
+    res.status(500).json({ error: 'Erro ao buscar usuário.' });
   }
 });
+
+
 export default userRouter;
