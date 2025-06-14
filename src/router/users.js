@@ -4,8 +4,6 @@ import { Router } from 'express';
 const userRouter = Router();
 const prisma = new PrismaClient();
 
-userRouter.options('*', cors());
-
 // Buscar todas as manicures
 userRouter.get('/manicures', async (req, res) => {
   try {
@@ -50,7 +48,7 @@ userRouter.get('/usuario/:id', async (req, res) => {
   try {
     const usuario = await prisma.user.findUnique({
       where: { id: Number(id) },
-      select: { // Select para não retornar dados sensíveis
+      select: { // Adicione select para não retornar dados sensíveis
         id: true,
         nome: true,
         email: true,
