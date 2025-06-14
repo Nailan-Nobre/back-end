@@ -9,7 +9,10 @@ import agendamentoRoutes from './src/router/agendamento.js';
 const app = Express();
 const corsOptions = {
   origin: [
-    'https://ifpi-picos.github.io'
+     'https://ifpi-picos.github.io',
+    'https://back-end-u9vj.onrender.com',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
   ],
   credentials: true
 };
