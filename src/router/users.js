@@ -1,10 +1,21 @@
 import { PrismaClient } from '@prisma/client';
 import { Router } from 'express';
+import verifyToken from '../middlewares/verifyToken.js';
 
 const userRouter = Router();
 const prisma = new PrismaClient();
 
-// Buscar todas as manicures
+// Middleware para checar tipo de usuário
+function permitirTipos(...tipos) {
+  return (req, res, next) => {
+    if (!req.user || !tipos.includes(req.user.tipo)) {
+      return res.status(403).json({ error: 'Permissão negada.' });
+    }
+    next();
+  };
+}
+
+// Buscar todas as manicures (acesso público)
 userRouter.get('/manicures', async (req, res) => {
   try {
     const manicures = await prisma.user.findMany({
@@ -17,7 +28,7 @@ userRouter.get('/manicures', async (req, res) => {
   }
 });
 
-// Buscar manicure por ID
+// Buscar manicure por ID (acesso público)
 userRouter.get('/manicures/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -36,15 +47,19 @@ userRouter.get('/manicures/:id', async (req, res) => {
   }
 });
 
-// Buscar qualquer usuário por ID
-userRouter.get('/usuario/:id', async (req, res) => {
+// Buscar qualquer usuário por ID (apenas o próprio usuário ou admin)
+userRouter.get('/usuario/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
+  // Só permite se for o próprio usuário ou admin
+  if (req.user.id !== Number(id) && req.user.tipo !== 'ADMIN') {
+    return res.status(403).json({ error: 'Permissão negada.' });
+  }
   try {
     const usuario = await prisma.user.findUnique({
       where: { id: Number(id) },
       select: {
         id: true,
-        name: true,
+        nome: true, // Corrija para 'nome' se seu banco usa esse campo
         email: true,
         telefone: true,
         estado: true,
@@ -62,5 +77,14 @@ userRouter.get('/usuario/:id', async (req, res) => {
   }
 });
 
+// Exemplo de rota exclusiva para CLIENTE
+userRouter.get('/cliente-area', verifyToken, permitirTipos('CLIENTE'), (req, res) => {
+  res.json({ message: 'Bem-vindo à área do cliente!😊' });
+});
+
+// Exemplo de rota exclusiva para MANICURE
+userRouter.get('/manicure-area', verifyToken, permitirTipos('MANICURE'), (req, res) => {
+  res.json({ message: 'Bem-vindo à área da manicure!😊' });
+});
 
 export default userRouter;

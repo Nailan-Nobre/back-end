@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 
 function verifyToken(req, res, next) {
-  // Permite requisições OPTIONS passar sem verificação
   if (req.method === 'OPTIONS') {
     return next();
   }
@@ -25,7 +24,7 @@ function verifyToken(req, res, next) {
     }
 
     req.user = decoded;
-    req.userId = decoded.id; // Adiciona userId explicitamente para fácil acesso
+    req.userId = decoded.id;
     next();
   });
 }
