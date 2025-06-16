@@ -36,7 +36,7 @@ router.post('/auth/google', async (req, res) => {
     const jwtToken = jwt.sign(
       { id: user.id, tipo: user.tipo },
       process.env.JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '1d' }
     );
 
     // Retorna o token e dados do usuário
