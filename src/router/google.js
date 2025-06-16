@@ -53,4 +53,4 @@ router.post('/auth/google', async (req, res) => {
   }
 });
 
-export default googleAuthRouter;
+export default router;
