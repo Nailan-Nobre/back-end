@@ -47,25 +47,16 @@ userRouter.get('/manicures/:id', async (req, res) => {
   }
 });
 
-// Buscar qualquer usuário por ID (apenas o próprio usuário)
+// Buscar qualquer usuário por ID (apenas o próprio usuário ou admin)
 userRouter.get('/usuario/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
-  if (req.user.id !== Number(id)) {
+  // Só permite se for o próprio usuário ou admin
+  if (req.user.id !== Number(id) && req.user.tipo !== 'ADMIN') {
     return res.status(403).json({ error: 'Permissão negada.' });
   }
   try {
     const usuario = await prisma.user.findUnique({
       where: { id: Number(id) },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        telefone: true,
-        estado: true,
-        cidade: true,
-        tipo: true,
-        foto: true
-      }
     });
     if (!usuario) {
       return res.status(404).json({ error: 'Usuário não encontrado.' });

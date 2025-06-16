@@ -2,7 +2,7 @@ import cors from 'cors';
 import Express from 'express';
 import logger from './src/middlewares/logger.js';
 import userRouter from './src/router/users.js';
-import authRouter from './src/router/auth.js';
+import registerRouter from './src/router/register.js';
 import verifyToken from './src/middlewares/verifyToken.js';
 import agendamentoRoutes from './src/router/agendamento.js';
 import googleAuthRouter from './src/router/google.js';
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 });
 
 // Rotas de autenticação (não requerem token)
-app.use(authRouter);
+app.use(registerRouter);
 app.use('/', googleAuthRouter);
 
 // Middleware de autenticação

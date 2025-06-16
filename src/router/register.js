@@ -4,7 +4,7 @@ import { Router } from "express";
 import jwt from "jsonwebtoken";
 
 const saltRounds = 10;
-const authRouter = Router();
+const registerRouter = Router();
 const prisma = new PrismaClient();
 
 // Rota de login
@@ -76,4 +76,4 @@ authRouter.post("/signup", async (req, res) => {
   }
 });
 
-export default authRouter;
+export default registerRouter;
