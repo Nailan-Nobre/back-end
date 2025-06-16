@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken';
 
-console.log(`[${new Date().toISOString()}] Incoming ${req.method} request to ${req.originalUrl}`);
-
 function verifyToken(req, res, next) {
   if (req.method === 'OPTIONS') {
     return next();
