@@ -12,7 +12,7 @@ import { verificarPermissao } from '../middlewares/authMiddleware.js';
 const router = express.Router();
 
 // Cliente cria agendamento
-router.post('/', verificarPermissao('CLIENTE'), criarAgendamento);
+router.post('/agendamento', verificarPermissao('CLIENTE'), criarAgendamento);
 
 // Cliente vê seus agendamentos
 router.get('/cliente', verificarPermissao('CLIENTE'), listarAgendamentosCliente);

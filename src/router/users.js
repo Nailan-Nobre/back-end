@@ -47,11 +47,10 @@ userRouter.get('/manicures/:id', async (req, res) => {
   }
 });
 
-// Buscar qualquer usuário por ID (apenas o próprio usuário ou admin)
+// Buscar qualquer usuário por ID (apenas o próprio usuário)
 userRouter.get('/usuario/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
-  // Só permite se for o próprio usuário ou admin
-  if (req.user.id !== Number(id) && req.user.tipo !== 'ADMIN') {
+  if (req.user.id !== Number(id)) {
     return res.status(403).json({ error: 'Permissão negada.' });
   }
   try {
@@ -75,16 +74,6 @@ userRouter.get('/usuario/:id', verifyToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar usuário.' });
   }
-});
-
-// Exemplo de rota exclusiva para CLIENTE
-userRouter.get('/cliente-area', verifyToken, permitirTipos('CLIENTE'), (req, res) => {
-  res.json({ message: 'Bem-vindo à área do cliente!😊' });
-});
-
-// Exemplo de rota exclusiva para MANICURE
-userRouter.get('/manicure-area', verifyToken, permitirTipos('MANICURE'), (req, res) => {
-  res.json({ message: 'Bem-vindo à área da manicure!😊' });
 });
 
 export default userRouter;

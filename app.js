@@ -5,6 +5,7 @@ import userRouter from './src/router/users.js';
 import authRouter from './src/router/auth.js';
 import verifyToken from './src/middlewares/verifyToken.js';
 import agendamentoRoutes from './src/router/agendamento.js';
+import authRouter from './router/auth.js';
 
 const app = Express();
 const corsOptions = {
@@ -30,13 +31,14 @@ app.get('/', (req, res) => {
 
 // Rotas de autenticação (não requerem token)
 app.use(authRouter);
+app.use('/', authRouter);
 
 // Middleware de autenticação
 app.use(verifyToken);
 
 // Rotas protegidas
 app.use(userRouter);
-app.use('/agendamentos', agendamentoRoutes);
+app.use('/', agendamentoRoutes);
 
 const PORT = process.env.PORT || 3000;
 
