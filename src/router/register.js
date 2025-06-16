@@ -8,7 +8,7 @@ const registerRouter = Router();
 const prisma = new PrismaClient();
 
 // Rota de login
-authRouter.post("/login", async (req, res) => {
+registerRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   const user = await prisma.user.findUnique({
@@ -41,7 +41,7 @@ authRouter.post("/login", async (req, res) => {
 });
 
 // Rota de cadastro
-authRouter.post("/signup", async (req, res) => {
+registerRouter.post("/signup", async (req, res) => {
   try {
     const { name, email, password, telefone, estado, cidade, tipo } = req.body;
 
