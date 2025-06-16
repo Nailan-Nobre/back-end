@@ -27,7 +27,6 @@ app.use(logger);
 app.get('/', (req, res) => {
   res.send("App online!");
 });
-app.use('/agendamentos', agendamentoRoutes);
 
 // Rotas de autenticação (não requerem token)
 app.use(authRouter);
@@ -37,6 +36,7 @@ app.use(verifyToken);
 
 // Rotas protegidas
 app.use(userRouter);
+app.use('/agendamentos', agendamentoRoutes);
 
 const PORT = process.env.PORT || 3000;
 

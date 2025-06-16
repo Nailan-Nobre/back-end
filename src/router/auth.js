@@ -23,12 +23,21 @@ authRouter.post("/login", async (req, res) => {
   const passwordIsValid = bcrypt.compareSync(password, user.password);
 
   if (passwordIsValid) {
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1d" });
-    delete user.password;
-    res.send({ user, token });
-  } else {
-    res.status(400).send("Usuário ou email inválidos");
-  }
+  const token = jwt.sign({ 
+    id: user.id,
+    tipo: user.tipo // Adicionar tipo no token
+  }, process.env.JWT_SECRET, { expiresIn: "1d" });
+  
+  res.send({ 
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      tipo: user.tipo
+    }, 
+    token 
+  });
+}
 });
 
 // Rota de cadastro

@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 
+console.log(`[${new Date().toISOString()}] Incoming ${req.method} request to ${req.originalUrl}`);
+
 function verifyToken(req, res, next) {
   if (req.method === 'OPTIONS') {
     return next();
@@ -16,14 +18,18 @@ function verifyToken(req, res, next) {
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({
-        auth: false,
-        message: 'Token inválido: ' + err.message,
-      });
-    }
-
-    req.user = decoded;
+  if (err) {
+    console.error(`Token verification failed: ${err.message}`, { token });
+    return res.status(401).json({
+      auth: false,
+      message: 'Token inválido ou expirado',
+    });
+    
+  }
+    req.user = {
+    id: decoded.id,
+    tipo: decoded.tipo // Garantir que o tipo está disponível
+  };
     req.userId = decoded.id;
     next();
   });

@@ -59,7 +59,7 @@ userRouter.get('/usuario/:id', verifyToken, async (req, res) => {
       where: { id: Number(id) },
       select: {
         id: true,
-        nome: true, // Corrija para 'nome' se seu banco usa esse campo
+        name: true,
         email: true,
         telefone: true,
         estado: true,
