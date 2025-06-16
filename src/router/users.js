@@ -58,6 +58,7 @@ userRouter.get('/usuario/:id', verifyToken, async (req, res) => {
     const usuario = await prisma.user.findUnique({
       where: { id: Number(id) },
       select: {
+        id: true,
         name: true,
         email: true,
         telefone: true,
