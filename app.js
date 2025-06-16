@@ -5,7 +5,7 @@ import userRouter from './src/router/users.js';
 import authRouter from './src/router/auth.js';
 import verifyToken from './src/middlewares/verifyToken.js';
 import agendamentoRoutes from './src/router/agendamento.js';
-import googleAuthRouter from './router/google.js';
+import googleAuthRouter from './src/router/google.js';
 
 const app = Express();
 const corsOptions = {
